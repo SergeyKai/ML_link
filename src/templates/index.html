@@ -1,1 +1,67 @@
 {% extends 'base/base.html' %}
+
+{% block main %}
+
+<div class="container">
+    <h2>Документы</h2>
+
+    <form action="" method="post" enctype="multipart/form-data">
+
+        <label for="file_1">
+            <input id="file_1" type="file" name="file_1">
+        </label>
+
+        <label for="file_2">
+            <input id="file_2" type="file" name="file_2">
+        </label>
+
+        <button type="submit">Загрузить</button>
+
+    </form>
+
+</div>
+
+<div class="container">
+
+    <h2>Предпросмотр</h2>
+    <div class="file-fields">
+
+        <div class="file-1 file-field">
+            <div class="file-field-header">
+                <h3 class="file-name">file 1</h3>
+                <span class="quantity-line">123</span>
+            </div>
+            <div class="file-body">
+                {% for row in file_1 %}
+                <div class="text-row">
+
+                    <div class="line-count">1</div>
+                    <div class="line-text"><p>{{ row }}</p></div>
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="file-2 file-field">
+            <div class="file-field-header">
+                <h3 class="file-name">file 2</h3>
+                <span class="quantity-line">123</span>
+            </div>
+            <div class="file-body">
+                {% for row in file_2 %}
+                <div class="text-row">
+
+                    <div class="line-count">1</div>
+                    <div class="line-text"><p>{{ row }}</p></div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock main %}

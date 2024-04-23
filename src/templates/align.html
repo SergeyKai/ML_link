@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/align.css') }}">
+
+{% endblock extra_styles %}
+
+{% block main %}
+
+<div class="container">
+
+    <h2>Название текста</h2>
+
+    <div class="visualization">
+        <h3>Визуализация</h3>
+
+        <div class="grids">
+            <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
+            <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
+            <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
+            <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
+        </div>
+
+    </div>
+
+    <div class="preferences">
+
+        <div class="preferences-header">
+            <h3>Параметры</h3>
+        </div>
+
+        <form action="">
+            <div class="fields-wrapper">
+                <label for="batches"><input id="batches" type="range"></label>
+                <label for="shift"><input id="shift" type="range"></label>
+                <label for="windows"><input id="windows" type="range"></label>
+            </div>
+            <button type="submit">Применить</button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock main %}
