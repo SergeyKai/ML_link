@@ -22,9 +22,20 @@ def index():
         for num, item in enumerate(request.files.items(), start=1):
             k, v = item
             with open(v.filename, 'r', encoding='utf-8') as file:
-                data = split_text(file.read())
-                print(num)
-                ctx.setdefault(f'file_{num}', data)
+                text = file.read()
+                chars_count = len(text)
+                data = split_text(text)
+                row_count = len(data)
+                ctx.setdefault(f'file_{num}', {
+                    'text': text,
+                    'chars_count': chars_count,
+                    'data': data,
+                    'row_count': row_count,
+                    'filename': v.filename,
+                })
+    else:
+        ctx.setdefault(f'file_{1}', None)
+        ctx.setdefault(f'file_{2}', None)
 
     return render_template('index.html', **ctx)
 

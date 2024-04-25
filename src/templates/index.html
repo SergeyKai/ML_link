@@ -28,14 +28,16 @@
 
         <div class="file-1 file-field">
             <div class="file-field-header">
-                <h3 class="file-name">file 1</h3>
-                <span class="quantity-line">123</span>
+                <h3 class="file-name">{{ file_1.filename }}</h3>
+                <span class="quantity-line">Количество строк: <span>{{ file_1.row_count }}</span></span>
+                <span class="quantity-line">Количество символов: <span>{{ file_1.chars_count }}</span></span>
             </div>
             <div class="file-body">
-                {% for row in file_1 %}
+                {% for row in file_1.data %}
+
                 <div class="text-row">
 
-                    <div class="line-count">1</div>
+                    <div class="line-count">{{ loop.index }}</div>
                     <div class="line-text"><p>{{ row }}</p></div>
 
                 </div>
@@ -45,14 +47,15 @@
 
         <div class="file-2 file-field">
             <div class="file-field-header">
-                <h3 class="file-name">file 2</h3>
-                <span class="quantity-line">123</span>
+                <h3 class="file-name">{{ file_2.filename }}</h3>
+                <span class="quantity-line">Количество строк: <span>{{ file_2.row_count }}</span></span>
+                <span class="quantity-line">Количество символов: <span>{{ file_2.chars_count }}</span></span>
             </div>
             <div class="file-body">
-                {% for row in file_2 %}
+                {% for row in file_2.data %}
                 <div class="text-row">
 
-                    <div class="line-count">1</div>
+                    <div class="line-count">{{ loop.index }}</div>
                     <div class="line-text"><p>{{ row }}</p></div>
                 </div>
                 {% endfor %}

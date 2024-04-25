@@ -12,11 +12,12 @@ body {
     position: fixed;
 
     width: 100%;
-    height: 70px;
+    height: 120px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
     background-color: #5a7ddd;
 
@@ -113,4 +114,34 @@ body {
 .line-text p {
     padding: 0;
     margin: 0;
+}
+
+
+.lang_bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.lang_item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 20px;
+}
+
+
+.lang_logo {
+    width: 50px;
+    height: 50px;
+}
+
+.ru {
+    background-image: url(http://localhost/static/flags/flag-en-h.svg);
+}
+
+.en {
+    
 }
