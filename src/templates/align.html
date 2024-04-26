@@ -9,8 +9,31 @@
 
 <div class="container">
 
-    <h2>Название текста</h2>
+    <div class="preferences">
 
+        <div class="preferences-header">
+            <h3>Параметры</h3>
+        </div>
+
+        <form action="" method="POST">
+            <div class="fields-wrapper">
+                <label for="batches">
+                    <span>Батчи</span>
+                    <input id="batches" name="batches" type="number" min="1" max="5">
+                </label>
+                <label for="shift">
+                    <span>Сдвиг</span>
+                    <input id="shift" name="shift" type="number" min="-500" max="500">
+                </label>
+                <label for="windows">
+                    <span>Окна</span>
+                    <input id="windows" name="windows" type="number" min="20" max="100">
+                </label>
+            </div>
+            <button type="submit">Применить</button>
+        </form>
+
+    </div>
 
     <div class="visualization">
         <h3>Визуализация</h3>
@@ -21,23 +44,6 @@
             <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
             <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
         </div>
-
-    </div>
-
-    <div class="preferences">
-
-        <div class="preferences-header">
-            <h3>Параметры</h3>
-        </div>
-
-        <form action="">
-            <div class="fields-wrapper">
-                <label for="batches"><input id="batches" type="range"></label>
-                <label for="shift"><input id="shift" type="range"></label>
-                <label for="windows"><input id="windows" type="range"></label>
-            </div>
-            <button type="submit">Применить</button>
-        </form>
 
     </div>
 

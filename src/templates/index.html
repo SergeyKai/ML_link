@@ -7,13 +7,32 @@
 
     <form action="" method="post" enctype="multipart/form-data">
 
-        <label for="file_1">
-            <input id="file_1" type="file" name="file_1">
-        </label>
 
-        <label for="file_2">
-            <input id="file_2" type="file" name="file_2">
-        </label>
+        <div class="first-file-wrapper">
+            <label for="langauge-first">
+                <select id="langauge-first" name="langauge-first">
+                    <option name="ru" value="ru">Русский</option>
+                    <option name="en" value="en">English</option>
+                </select>
+            </label>
+            <label for="file_1">
+                <input id="file_1" type="file" name="file_1">
+            </label>
+
+        </div>
+
+        <div class="second-file-wrapper">
+            <label for="langauge-second">
+                <select id="langauge-second" name="langauge-second">
+                    <option name="ru" value="ru">Русский</option>
+                    <option name="en" value="en">English</option>
+                </select>
+            </label>
+            <label for="file_2">
+                <input id="file_2" type="file" name="file_2">
+            </label>
+
+        </div>
 
         <button type="submit">Загрузить</button>
 
