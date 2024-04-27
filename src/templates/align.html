@@ -39,10 +39,10 @@
         <h3>Визуализация</h3>
 
         <div class="grids">
-            <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
-            <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
-            <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
-            <div class="img-wrapper"><img src="https://gb.ru/blog/wp-content/uploads/2022/10/4-9.jpg" alt=""></div>
+            {% for image in visualization_files %}
+            <div class="img-wrapper"><img src="{{ url_for('static', filename=image) }}" alt="">
+            </div>
+            {% endfor %}
         </div>
 
     </div>

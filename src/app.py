@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 from src.storage import FirstFile, SecondFile
-from src.utils import split_text, create_db
+from src.utils import split_text, create_db, alignment
 
 app = Flask(__file__)
 
@@ -64,6 +64,10 @@ def index():
 
 @app.route('/align/', methods=['GET', 'POST'])
 def align():
+    ctx = {
+        'visualization_files': [f'alignment_visualisation/alignment_vis_{count}.png' for count in range(int(1))],
+    }
+
     if FirstFile.FILE_NAME is not None and SecondFile.FILE_NAME is not None:
         create_db()
 
@@ -73,10 +77,18 @@ def align():
         shift = request.form.get('shift')
         windows = request.form.get('windows')
 
+        alignment(
+            batches=int(batches),
+            shift=int(shift),
+            windows=int(windows),
+        )
+
+        # ctx['visualization_files'].extend([f'alignment_vis_{count}.png' for count in range(int(batches))])
+
         print(batches)
         print(shift)
         print(windows)
-    return render_template('align.html')
+    return render_template('align.html', **ctx)
 
 
 @app.route('/grid/')

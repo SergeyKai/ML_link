@@ -8,3 +8,10 @@ DB_PATH = os.path.join(BASE_DIR, 'my_book.db')
 MODELS = ["sentence_transformer_multilingual", "sentence_transformer_multilingual_labse"]
 
 DEFAULT_MODEL = MODELS[0]
+
+EMBED_BATCH_SIZE = 10
+BATCH_SIZE: int = 100
+
+IMG_OUTPUT_NAME = 'alignment_vis.png'
+IMG_OUTPUT_DIR_PATH = os.path.join(BASE_DIR, 'static/alignment_visualisation')
+IMG_OUTPUT_PATH = os.path.join(IMG_OUTPUT_DIR_PATH, IMG_OUTPUT_NAME)
