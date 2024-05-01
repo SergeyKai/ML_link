@@ -19,15 +19,15 @@
             <div class="fields-wrapper">
                 <label for="batches">
                     <span>Батчи</span>
-                    <input id="batches" name="batches" type="number" min="1" max="5">
+                    <input id="batches" name="batches" type="number" min="1" max="5" value="1">
                 </label>
                 <label for="shift">
                     <span>Сдвиг</span>
-                    <input id="shift" name="shift" type="number" min="-500" max="500">
+                    <input id="shift" name="shift" type="number" min="-500" max="500" value="0">
                 </label>
                 <label for="windows">
                     <span>Окна</span>
-                    <input id="windows" name="windows" type="number" min="20" max="100">
+                    <input id="windows" name="windows" type="number" min="20" max="100" value="40">
                 </label>
             </div>
             <button type="submit">Применить</button>
@@ -52,6 +52,31 @@
 
         <div class="preferences-header">
             <h3>Конфликты</h3>
+        </div>
+
+        <div class="conflicts-wrapper">
+            <ul class="conflict-from-file-1 conflict-from-file">
+                {% for conflict in conflicts['file_1'] %}
+                <li class="conflict">
+                    {% for row, text in conflict.items() %}
+                    <div class="conflict-row"><span>{{ row }}</span></div>
+                    <div class="conflict-text"><p>{{ text }}</p></div>
+                    {% endfor %}
+                </li>
+                {% endfor %}
+            </ul>
+
+
+            <ul class="conflict-from-file-2 conflict-from-file">
+                {% for conflict in conflicts['file_2'] %}
+                <li class="conflict">
+                    {% for row, text in conflict.items() %}
+                    <div class="conflict-row"><span>{{ row }}</span></div>
+                    <div class="conflict-text"><p>{{ text }}</p></div>
+                    {% endfor %}
+                </li>
+                {% endfor %}
+            </ul>
         </div>
 
     </div>

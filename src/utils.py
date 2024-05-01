@@ -2,7 +2,8 @@ import os
 
 from lingtrain_aligner import preprocessor, splitter, aligner, resolver, reader, helper, vis_helper
 
-from src.config import DB_PATH, DEFAULT_MODEL, EMBED_BATCH_SIZE, IMG_OUTPUT_PATH, BATCH_SIZE
+from src.config import DB_PATH, DEFAULT_MODEL, EMBED_BATCH_SIZE, IMG_OUTPUT_PATH, BATCH_SIZE, MAIN_CHAIN_LENGTH, \
+    MAX_CONFLICTS_LEN, BATCH_ID
 from src.storage import FirstFile, SecondFile
 
 
@@ -40,7 +41,7 @@ def visualize(batches: int, batch_ids):
         output_path=IMG_OUTPUT_PATH,
         lang_name_from=FirstFile.LANGUAGE,
         lang_name_to=SecondFile.LANGUAGE,
-        batch_size=batches * BATCH_SIZE,
+        batch_size=400,
         batch_ids=batch_ids,
         size=(800, 800),
     )
@@ -67,3 +68,24 @@ def alignment(
                      )
 
     visualize(batches, batch_ids)
+
+
+def get_conflicts():
+    conflicts_to_solve, rest = resolver.get_all_conflicts(
+        DB_PATH,
+        min_chain_length=MAIN_CHAIN_LENGTH,
+        max_conflicts_len=MAX_CONFLICTS_LEN,
+        batch_id=BATCH_ID
+    )
+
+    conflicts = {
+        'file_1': [],
+        'file_2': [],
+    }
+
+    for conflict in conflicts_to_solve:
+        c_conf = resolver.show_conflict(DB_PATH, conflict)
+        conflicts['file_1'].extend(c_conf[0])
+        conflicts['file_2'].extend(c_conf[1])
+
+    return conflicts

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 from src.storage import FirstFile, SecondFile
-from src.utils import split_text, create_db, alignment
+from src.utils import split_text, create_db, alignment, get_conflicts
 
 app = Flask(__file__)
 
@@ -83,11 +83,8 @@ def align():
             windows=int(windows),
         )
 
-        # ctx['visualization_files'].extend([f'alignment_vis_{count}.png' for count in range(int(batches))])
+        ctx['conflicts'] = get_conflicts()
 
-        print(batches)
-        print(shift)
-        print(windows)
     return render_template('align.html', **ctx)
 
 
