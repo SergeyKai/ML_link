@@ -3,7 +3,7 @@ import os
 from lingtrain_aligner import preprocessor, splitter, aligner, resolver, reader, helper, vis_helper
 
 from src.config import DB_PATH, DEFAULT_MODEL, EMBED_BATCH_SIZE, IMG_OUTPUT_PATH, BATCH_SIZE, MAIN_CHAIN_LENGTH, \
-    MAX_CONFLICTS_LEN, BATCH_ID
+    MAX_CONFLICTS_LEN, BATCH_ID, OUTPUT_FILE_PATH
 from src.storage import FirstFile, SecondFile
 
 
@@ -46,8 +46,6 @@ def visualize(batches: int, batch_ids):
         size=(800, 800),
     )
 
-    print(p)
-
 
 def alignment(
         batches: int,
@@ -78,14 +76,84 @@ def get_conflicts():
         batch_id=BATCH_ID
     )
 
-    conflicts = {
-        'file_1': [],
-        'file_2': [],
-    }
+    print('=' * 30)
+    print(conflicts_to_solve)
+    print('=' * 30)
+
+    conflicts_first_file = []
+    conflicts_second_file = []
 
     for conflict in conflicts_to_solve:
         c_conf = resolver.show_conflict(DB_PATH, conflict)
-        conflicts['file_1'].extend(c_conf[0])
-        conflicts['file_2'].extend(c_conf[1])
+        conflicts_first_file.extend([{k: v} for k, v in c_conf[0].items()])
+        conflicts_second_file.extend([{k: v} for k, v in c_conf[1].items()])
+        print(1)
 
-    return conflicts
+    return conflicts_first_file, conflicts_second_file
+
+
+def second_alignment():
+    steps = 3
+    batch_id = -1
+
+    for i in range(steps):
+        conflicts, rest = resolver.get_all_conflicts(
+            DB_PATH,
+            min_chain_length=2 + i,
+            max_conflicts_len=6 * (i + 1),
+            batch_id=batch_id,
+            handle_start=True,
+            handle_finish=True,
+        )
+        resolver.resolve_all_conflicts(
+            DB_PATH,
+            conflicts,
+            DEFAULT_MODEL,
+            show_logs=False
+        )
+        vis_helper.visualize_alignment_by_db(
+            DB_PATH,
+            output_path=IMG_OUTPUT_PATH,
+            lang_name_from=FirstFile.LANGUAGE,
+            lang_name_to=SecondFile.LANGUAGE,
+            batch_size=400,
+            size=(600, 600),
+            plt_show=False,
+        )
+
+        if len(rest) == 0:
+            break
+
+
+def read_file(file_path):
+    with open(file_path, 'r') as file:
+        return file.read()
+
+
+def create_result_file_html():
+    current_file_path = OUTPUT_FILE_PATH + '.html'
+
+    paragraphs, delimeters, metas, sent_counter = reader.get_paragraphs(
+        DB_PATH, direction="to"
+    )
+    my_style = [
+        '{"background": "#A2E4B8", "color": "black", "border-bottom": "0px solid red"}',
+        '{"background": "#FFC1CC", "color": "black"}',
+        '{"background": "#9BD3DD", "color": "black"}',
+        '{"background": "#FFFCC9", "color": "black"}'
+    ]
+
+    lang_ordered = ["from", "to"]
+
+    reader.create_book(
+        lang_ordered=lang_ordered,
+        paragraphs=paragraphs,
+        delimeters=delimeters,
+        metas=metas,
+        sent_counter=sent_counter,
+        output_path=current_file_path,
+        template="pastel_fill",
+        styles=my_style,
+    )
+
+    return current_file_path, 'read_file(current_file_path)'

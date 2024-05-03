@@ -1,9 +1,39 @@
 {% extends 'base/base.html' %}
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/grid.css') }}">
+
+{% endblock extra_styles %}
+
 
 {% block main %}
 
-<div class="alert">
-<h1>Верстка</h1>
+<div class="container">
+
+    <h2>Верстка</h2>
+
+    <form method="post">
+        <select name="format">
+            <option value="TMX">TMX</option>
+            <option value="HTML">HTML</option>
+        </select>
+        <button class="inline-btn" type="submit">Создать</button>
+    </form>
+
+    <a href="{{ file_path }}" class="download-file">Скачать файл</a>
+
+
+    {% if file_path %}
+
+    <a href="" class="inline-btn">Предпросмотр</a>
+
+    <div class="preview-file">
+
+        {{ file_content | safe }}
+
+    </div>
+
+    {% endif %}
+
 
 </div>
 

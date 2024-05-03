@@ -47,6 +47,8 @@
 
     </div>
 
+    <a href="/secondary-align/" class="inline-btn">Повторное выравнивание</a>
+
     <div class="conflicts">
 
 
@@ -56,7 +58,7 @@
 
         <div class="conflicts-wrapper">
             <ul class="conflict-from-file-1 conflict-from-file">
-                {% for conflict in conflicts['file_1'] %}
+                {% for conflict in conflicts_1 %}
                 <li class="conflict">
                     {% for row, text in conflict.items() %}
                     <div class="conflict-row"><span>{{ row }}</span></div>
@@ -68,7 +70,7 @@
 
 
             <ul class="conflict-from-file-2 conflict-from-file">
-                {% for conflict in conflicts['file_2'] %}
+                {% for conflict in conflicts_2 %}
                 <li class="conflict">
                     {% for row, text in conflict.items() %}
                     <div class="conflict-row"><span>{{ row }}</span></div>

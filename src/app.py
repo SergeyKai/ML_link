@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 from src.storage import FirstFile, SecondFile
-from src.utils import split_text, create_db, alignment, get_conflicts
+from src.utils import split_text, create_db, alignment, get_conflicts, second_alignment, create_result_file_html
 
 app = Flask(__file__)
 
@@ -72,7 +72,6 @@ def align():
         create_db()
 
     if request.method == 'POST':
-        print(request.form)
         batches = request.form.get('batches')
         shift = request.form.get('shift')
         windows = request.form.get('windows')
@@ -83,14 +82,41 @@ def align():
             windows=int(windows),
         )
 
-        ctx['conflicts'] = get_conflicts()
+        ctx['conflicts_1'], ctx['conflicts_2'] = get_conflicts()
 
     return render_template('align.html', **ctx)
 
 
-@app.route('/grid/')
+@app.route('/secondary-align/', methods=['GET', 'POST'])
+def second_alignment_view():
+    if request.method == 'POST':
+        return redirect('/align/')
+    second_alignment()
+    c_1, c_2 = get_conflicts()
+
+    ctx = {
+        'visualization_files': [f'alignment_visualisation/alignment_vis_{count}.png' for count in range(int(1))],
+        'conflicts_1': c_1,
+        'conflicts_2': c_2,
+    }
+
+    return render_template('align.html', **ctx)
+
+
+@app.route('/grid/', methods=['GET', 'POST'])
 def grid():
-    return render_template('grid.html')
+    ctx = {}
+    if request.method == 'POST':
+        current_format = request.form.get('format')
+
+        if current_format == 'HTML':
+            file_path, file_content = create_result_file_html()
+            ctx = {
+                'file_path': file_path,
+                'file_content': file_content,
+            }
+
+    return render_template('grid.html', **ctx)
 
 
 if __name__ == '__main__':
