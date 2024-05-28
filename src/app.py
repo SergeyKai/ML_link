@@ -109,7 +109,7 @@ def second_alignment_view():
 def download_file(filename):
     directory = OUTPUT_FILE_DIR_PATH
     try:
-        return send_from_directory(directory, filename + '.html', as_attachment=True)
+        return send_from_directory(directory, filename, as_attachment=True)
     except FileNotFoundError:
         abort(404)
 
@@ -125,14 +125,14 @@ def grid():
             ctx = {
                 'file_path': file_path,
                 'file_content': file_content,
-                'file_name': OUTPUT_FILE_NAME,
+                'file_name': OUTPUT_FILE_NAME + '.html',
             }
         elif current_format == 'TMX':
-            file_path, file_content = create_result_file_TMX()
+            file_path = create_result_file_TMX()
 
             ctx = {
                 'file_path': file_path,
-                'file_content': 'file_content',
+                'file_name': OUTPUT_FILE_NAME + '.tmx',
             }
 
     return render_template('grid.html', **ctx)

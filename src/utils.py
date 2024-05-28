@@ -1,7 +1,6 @@
 import os
 
-from lingtrain_aligner import preprocessor, splitter, aligner, resolver, reader, helper, vis_helper
-
+from lingtrain_aligner import preprocessor, splitter, aligner, resolver, reader, helper, vis_helper, saver
 from src.config import DB_PATH, DEFAULT_MODEL, EMBED_BATCH_SIZE, IMG_OUTPUT_PATH, BATCH_SIZE, MAIN_CHAIN_LENGTH, \
     MAX_CONFLICTS_LEN, BATCH_ID, OUTPUT_FILE_PATH, OUTPUT_FILE_DIR_PATH
 from src.storage import FirstFile, SecondFile
@@ -160,15 +159,7 @@ def create_result_file_html():
 
 
 def create_result_file_TMX():
-    from lingtrain_aligner import saver
+    current_file_path = OUTPUT_FILE_PATH + '.tmx'
+    saver.save_tmx(DB_PATH, current_file_path, FirstFile.LANGUAGE, SecondFile.LANGUAGE)
 
-    saver.save_plain_text(DB_PATH, os.path.join(OUTPUT_FILE_DIR_PATH, f"corpora_{FirstFile.LANGUAGE}.txt"),
-                          direction="from",
-                          batch_ids=[])
-    saver.save_plain_text(DB_PATH, os.path.join(OUTPUT_FILE_DIR_PATH, f"corpora_{SecondFile.LANGUAGE}.txt"),
-                          direction="to",
-                          batch_ids=[])
-
-    saver.save_tmx(DB_PATH, os.path.join(OUTPUT_FILE_DIR_PATH, f"corpora.tmx"), FirstFile.LANGUAGE, SecondFile.LANGUAGE)
-
-    return os.path.join(OUTPUT_FILE_DIR_PATH, f"corpora.tmx")
+    return current_file_path
