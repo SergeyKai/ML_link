@@ -5,6 +5,8 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
+    <script src="https://kit.fontawesome.com/800f121123.js" crossorigin="anonymous"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
@@ -31,6 +33,12 @@
     <a href="http://google.com"></a>
 </header>
 
+<div class="loading-box" id="loading-box">
+    <div id="loading-spinner" class="loading-spinner"></div>
+</div>
+
+{% block alert_box %}
+{% endblock alert_box %}
 
 <main class="main-content">
     {% block main %}
@@ -38,6 +46,20 @@
     {% endblock main %}
 </main>
 
+<script>
+
+    let loadingElements = document.getElementsByClassName('loading');
+    let loadingBox = document.getElementById('loading-box');
+
+
+    Array.from(loadingElements).forEach(element => {
+        element.addEventListener('click', function(event) {
+            loadingBox.style.display = 'flex';
+        });
+    });
+</script>
+{% block extra_scripts %}
+{% endblock extra_scripts %}
 
 </body>
 

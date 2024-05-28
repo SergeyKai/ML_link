@@ -1,4 +1,12 @@
 .preview-file {
-    margin: 0 auto;
-    max-width: 1400px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.format-field {
+    border: 1px solid #5a7ddd;
+    border-radius: 10px;
+
+    padding:10px;
+    margin: 10px;
 }

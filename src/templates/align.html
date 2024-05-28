@@ -5,6 +5,7 @@
 
 {% endblock extra_styles %}
 
+
 {% block main %}
 
 <div class="container">
@@ -15,7 +16,7 @@
             <h3>Параметры</h3>
         </div>
 
-        <form action="" method="POST">
+        <form action="" method="POST" class="align-config-form">
             <div class="fields-wrapper">
                 <label for="batches">
                     <span>Батчи</span>
@@ -30,7 +31,7 @@
                     <input id="windows" name="windows" type="number" min="20" max="100" value="40">
                 </label>
             </div>
-            <button type="submit">Применить</button>
+            <button type="submit" class="apply-btn loading">Применить</button>
         </form>
 
     </div>
@@ -47,7 +48,6 @@
 
     </div>
 
-    <a href="/secondary-align/" class="inline-btn">Повторное выравнивание</a>
 
     <div class="conflicts">
 
@@ -80,6 +80,9 @@
                 {% endfor %}
             </ul>
         </div>
+
+        <a href="/secondary-align/" class="inline-btn loading">Повторное выравнивание</a>
+
 
     </div>
 

@@ -3,7 +3,7 @@ import os
 from lingtrain_aligner import preprocessor, splitter, aligner, resolver, reader, helper, vis_helper
 
 from src.config import DB_PATH, DEFAULT_MODEL, EMBED_BATCH_SIZE, IMG_OUTPUT_PATH, BATCH_SIZE, MAIN_CHAIN_LENGTH, \
-    MAX_CONFLICTS_LEN, BATCH_ID, OUTPUT_FILE_PATH
+    MAX_CONFLICTS_LEN, BATCH_ID, OUTPUT_FILE_PATH, OUTPUT_FILE_DIR_PATH
 from src.storage import FirstFile, SecondFile
 
 
@@ -18,8 +18,8 @@ def split_text(text: str, lang: str = 'ru'):
 
 
 def create_db():
-    if os.path.isfile(DB_PATH):
-        os.unlink(DB_PATH)
+    # if os.path.isfile(DB_PATH):
+    #     os.unlink(DB_PATH)
 
     print('=' * 30)
     print(FirstFile.LANGUAGE)
@@ -126,7 +126,7 @@ def second_alignment():
 
 
 def read_file(file_path):
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         return file.read()
 
 
@@ -156,4 +156,19 @@ def create_result_file_html():
         styles=my_style,
     )
 
-    return current_file_path, 'read_file(current_file_path)'
+    return current_file_path, read_file(current_file_path)
+
+
+def create_result_file_TMX():
+    from lingtrain_aligner import saver
+
+    saver.save_plain_text(DB_PATH, os.path.join(OUTPUT_FILE_DIR_PATH, f"corpora_{FirstFile.LANGUAGE}.txt"),
+                          direction="from",
+                          batch_ids=[])
+    saver.save_plain_text(DB_PATH, os.path.join(OUTPUT_FILE_DIR_PATH, f"corpora_{SecondFile.LANGUAGE}.txt"),
+                          direction="to",
+                          batch_ids=[])
+
+    saver.save_tmx(DB_PATH, os.path.join(OUTPUT_FILE_DIR_PATH, f"corpora.tmx"), FirstFile.LANGUAGE, SecondFile.LANGUAGE)
+
+    return os.path.join(OUTPUT_FILE_DIR_PATH, f"corpora.tmx")

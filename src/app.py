@@ -1,13 +1,13 @@
-from flask import Flask, render_template, request, redirect
+from pprint import pprint
 
+from flask import Flask, render_template, request, redirect, send_from_directory, abort
+
+from src.config import OUTPUT_FILE_DIR_PATH, OUTPUT_FILE_NAME
 from src.storage import FirstFile, SecondFile
-from src.utils import split_text, create_db, alignment, get_conflicts, second_alignment, create_result_file_html
+from src.utils import split_text, create_db, alignment, get_conflicts, second_alignment, create_result_file_html, \
+    create_result_file_TMX
 
 app = Flask(__file__)
-
-
-def form_file_upload_validation():
-    pass
 
 
 def prepare_ctx_text(filename: str, lang: str):
@@ -56,8 +56,10 @@ def index():
         ctx.setdefault('file_2', second_file_data)
 
     else:
-        ctx.setdefault(f'file_1', None)
-        ctx.setdefault(f'file_2', None)
+        ctx.setdefault('file_1', None)
+        ctx.setdefault('file_2', None)
+
+    pprint(ctx)
 
     return render_template('index.html', **ctx)
 
@@ -103,6 +105,15 @@ def second_alignment_view():
     return render_template('align.html', **ctx)
 
 
+@app.route('/download/<filename>', methods=['GET'])
+def download_file(filename):
+    directory = OUTPUT_FILE_DIR_PATH
+    try:
+        return send_from_directory(directory, filename + '.html', as_attachment=True)
+    except FileNotFoundError:
+        abort(404)
+
+
 @app.route('/grid/', methods=['GET', 'POST'])
 def grid():
     ctx = {}
@@ -114,6 +125,14 @@ def grid():
             ctx = {
                 'file_path': file_path,
                 'file_content': file_content,
+                'file_name': OUTPUT_FILE_NAME,
+            }
+        elif current_format == 'TMX':
+            file_path, file_content = create_result_file_TMX()
+
+            ctx = {
+                'file_path': file_path,
+                'file_content': 'file_content',
             }
 
     return render_template('grid.html', **ctx)

@@ -12,15 +12,18 @@
     <h2>Верстка</h2>
 
     <form method="post">
-        <select name="format">
-            <option value="TMX">TMX</option>
+        <select name="format" class="format-field">
             <option value="HTML">HTML</option>
+            <option value="TMX">TMX</option>
         </select>
         <button class="inline-btn" type="submit">Создать</button>
     </form>
 
-    <a href="{{ file_path }}" class="download-file">Скачать файл</a>
+    {% if file_name %}
 
+    <a href="{{ url_for('download_file', filename=file_name) }}" class="download-file inline-btn"><i class="fa-solid fa-download"></i> Скачать файл</a>
+
+    {% endif %}
 
     {% if file_path %}
 

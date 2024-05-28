@@ -1,40 +1,69 @@
 {% extends 'base/base.html' %}
 
+{% block alert_box %}
+{% if file_1 %}
+<div class="alert-to-switch" id="alert-to-switch">
+    <p>Файлы загружены!</p>
+    <p>Для дальнейшей обработки перейдите на страницу: <a href="{{ url_for('align') }}">Разметка</a></p>
+</div>
+{% endif %}
+{% endblock alert_box %}
+
 {% block main %}
 
+
 <div class="container">
-    <h2>Документы</h2>
 
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data" class="file-upload-form">
+        <h2>Документы</h2>
 
+        <div class="file-field-wrapper">
+            <div class="first-file-wrapper file-wrapper">
+                <label for="langauge-first">
+                    <select id="langauge-first" name="langauge-first" class="language-field">
+                        <option name="ru" value="ru">Русский</option>
+                        <option name="en" value="en">English</option>
+                    </select>
+                </label>
+                <label for="file_1" class="file-field-label">
+                    <input id="file_1" type="file" name="file_1">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    <span>Загрузить файл</span>
+                </label>
 
-        <div class="first-file-wrapper">
-            <label for="langauge-first">
-                <select id="langauge-first" name="langauge-first">
-                    <option name="ru" value="ru">Русский</option>
-                    <option name="en" value="en">English</option>
-                </select>
-            </label>
-            <label for="file_1">
-                <input id="file_1" type="file" name="file_1">
-            </label>
+            </div>
 
+            <div class="second-file-wrapper file-wrapper">
+                <label for="langauge-second">
+                    <select id="langauge-second" name="langauge-second" class="language-field">
+                        <option name="ru" value="ru">Русский</option>
+                        <option name="en" value="en">English</option>
+                    </select>
+                </label>
+                <label for="file_2" class="file-field-label">
+                    <input id="file_2" type="file" name="file_2">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    <span>Загрузить файл</span>
+                </label>
+
+            </div>
         </div>
 
-        <div class="second-file-wrapper">
-            <label for="langauge-second">
-                <select id="langauge-second" name="langauge-second">
-                    <option name="ru" value="ru">Русский</option>
-                    <option name="en" value="en">English</option>
-                </select>
-            </label>
-            <label for="file_2">
-                <input id="file_2" type="file" name="file_2">
-            </label>
+        <script>
+            function updateFileName(inputId) {
+                var input = document.getElementById(inputId);
+                input.addEventListener('change', function() {
+                    var fileName = this.files[0].name;
+                    var span = this.nextElementSibling.nextElementSibling;
+                    span.textContent = fileName;
+                });
+            }
 
-        </div>
+            updateFileName('file_1');
+            updateFileName('file_2');
+        </script>
 
-        <button type="submit">Загрузить</button>
+        <button type="submit" class="upload-files-btn">Загрузить</button>
 
     </form>
 
@@ -42,48 +71,67 @@
 
 <div class="container">
 
-    <h2>Предпросмотр</h2>
-    <div class="file-fields">
+    <div class="previews">
 
-        <div class="file-1 file-field">
-            <div class="file-field-header">
-                <h3 class="file-name">{{ file_1.filename }}</h3>
-                <span class="quantity-line">Количество строк: <span>{{ file_1.row_count }}</span></span>
-                <span class="quantity-line">Количество символов: <span>{{ file_1.chars_count }}</span></span>
+        <h2>Предпросмотр</h2>
+
+        <div class="file-fields">
+
+
+            <div class="file-1 file-field">
+                <div class="file-field-header">
+                    <h3 class="file-name">{{ file_1.filename }}</h3>
+                    <span class="quantity-line">Количество строк: <span>{{ file_1.row_count }}</span></span>
+                    <span class="quantity-line">Количество символов: <span>{{ file_1.chars_count }}</span></span>
+                </div>
+                <div class="file-body">
+                    {% for row in file_1.data %}
+
+                    <div class="text-row">
+
+                        <div class="line-count">{{ loop.index }}</div>
+                        <div class="line-text"><p>{{ row }}</p></div>
+
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="file-body">
-                {% for row in file_1.data %}
 
-                <div class="text-row">
+            <div class="file-2 file-field">
+                <div class="file-field-header">
+                    <h3 class="file-name">{{ file_2.filename }}</h3>
+                    <span class="quantity-line">Количество строк: <span>{{ file_2.row_count }}</span></span>
+                    <span class="quantity-line">Количество символов: <span>{{ file_2.chars_count }}</span></span>
+                </div>
+                <div class="file-body">
+                    {% for row in file_2.data %}
+                    <div class="text-row">
 
-                    <div class="line-count">{{ loop.index }}</div>
-                    <div class="line-text"><p>{{ row }}</p></div>
+                        <div class="line-count">{{ loop.index }}</div>
+                        <div class="line-text"><p>{{ row }}</p></div>
+                    </div>
+                    {% endfor %}
 
                 </div>
-                {% endfor %}
             </div>
+
         </div>
-
-        <div class="file-2 file-field">
-            <div class="file-field-header">
-                <h3 class="file-name">{{ file_2.filename }}</h3>
-                <span class="quantity-line">Количество строк: <span>{{ file_2.row_count }}</span></span>
-                <span class="quantity-line">Количество символов: <span>{{ file_2.chars_count }}</span></span>
-            </div>
-            <div class="file-body">
-                {% for row in file_2.data %}
-                <div class="text-row">
-
-                    <div class="line-count">{{ loop.index }}</div>
-                    <div class="line-text"><p>{{ row }}</p></div>
-                </div>
-                {% endfor %}
-
-            </div>
-        </div>
-
     </div>
 
 </div>
 
 {% endblock main %}
+
+{% block extra_scripts %}
+<script>
+    let alertBox = document.getElementById('alert-to-switch');
+
+    if (alertBox) {
+        alertBox.addEventListener('click', function (element) {
+            console.log('gggg')
+            alertBox.remove();
+        });
+    }
+
+</script>
+{% endblock extra_scripts %}
